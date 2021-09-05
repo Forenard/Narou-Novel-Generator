@@ -15,19 +15,19 @@ def main(url, word_size,  out_max, out_min, out_num, first_word):
         with open(file, mode="r", encoding='utf-8') as f:
             bodies += f.read()  # txtファイルを読み込んで結合
     markov_model = markovify.NewlineText(
-        bodies, state_size=word_size, well_formed=False)
+        bodies, state_size=word_size, well_formed=False)  # マルコフ連鎖モデルを構成
     for _ in range(out_num):
         if(first_word != 'none'):
             try:
                 sentence = markov_model.make_sentence_with_start(
-                    max_words=out_max, min_words=out_min, tries=100, beginning=first_word).replace(' ', '')
+                    max_words=out_max, min_words=out_min, tries=100, beginning=first_word).replace(' ', '')  # 文章生成(最初の言葉あり)
             except:
                 print(
                     'The word you entered may not exist in the novel.\nOr it may contain unidentifiable characters.')
                 exit()
         else:
             sentence = markov_model.make_sentence(
-                max_words=out_max, min_words=out_min, tries=100).replace(' ', '')
+                max_words=out_max, min_words=out_min, tries=100).replace(' ', '')  # 文章生成(ランダム)
         print('out', sentence)
 
 
