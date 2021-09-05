@@ -28,13 +28,12 @@ def format_text(t):
     返り値:(str)フォーマット後のテキスト
     markovifyが読み込むとエラーを吐き出す文字があるので、それを除去する
     '''
-    t = re.sub(r'[0-9０-９a-zA-Zａ-ｚＡ-Ｚ]+', "", t)
     return re.sub(r'[\．_－―─！＠＃＄％＾＆\-‐|\\＊\“（）＿■×+α※÷⇒—●★☆〇◎◆▼◇△□(：〜～＋=)／*&^%$#@!~`){}［］…\[\]\"\'\”\’:;<>?＜＞〔〕〈〉？、。・,\./『』【】「」→←○《》≪≫\r\u3000\u2000]+', "", t)
 
 
 def get_bodies_from_url(url):
     '''
-    引数:(str)なろう小説の各ページのURL(リゼロならhttps://ncode.syosetu.com/n2267be/1/ など)
+    引数:(str)各ページのURL(リゼロならhttps://ncode.syosetu.com/n2267be/1/ など)
     返り値:(str)分かち書き後、文章単位で改行された本文
     '''
     bsobj = make_bsobj(url)
@@ -49,18 +48,14 @@ def get_bodies_from_url(url):
 
 def get_num_of_pages(url):
     '''
-    引数:(str)なろう小説のトップページのURL(リゼロならhttps://ncode.syosetu.com/n2267be/)
+    引数:(str)目次ページURL(リゼロならhttps://ncode.syosetu.com/n2267be/)
     返り値:(int)ページ数
     '''
     bsobj = make_bsobj(url+'/1')
     return int(bsobj.select('#novel_no')[0].get_text().replace('1/', ''))
 
 
-def main():
-    url = input(
-        "Enter the URL of the novel.\n(ex:https://ncode.syosetu.com/n2267be)\n>")  # url
-    pages_num = int(
-        input("Enter the number of pages you want to save.\n>"))  # 保存するページ数
+def main(url, pages_num):
     id = url[url.strip('/').rfind('/'):len(url)]  # saveフォルダ構成用に識別番号を取得
     all_pages_num = get_num_of_pages(url)  # 全ページ数の取得
     for i in range(1, pages_num+1):
@@ -74,4 +69,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    url = input(
+        "Enter the URL of the novel.\n(ex:https://ncode.syosetu.com/n2267be)\n>")  # url
+    pages_num = int(
+        input("Enter the number of pages you want to save.\n>"))  # 保存するページ数
+    main(url, pages_num)
